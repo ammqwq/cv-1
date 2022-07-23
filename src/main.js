@@ -34,7 +34,7 @@ let string = `/* 你好，我叫时茶
     transform: translateX(-50%);
     background: #000;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 25%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 100%);
+    background: radial-gradient(circle, rgba(0,0,0,1) 0px, rgba(0,0,0,1) 0px, rgba(255,255,255,1) 0px, rgba(255,255,255,1) 20px, rgba(0,0,0,1) 21px);
 }
 #div1::after{
     width: 100px;
@@ -44,11 +44,38 @@ let string = `/* 你好，我叫时茶
     transform: translateX(-50%);
     background: #fff;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 25%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 100%, rgba(0,0,0,1) 100%);
+    background: radial-gradient(circle, rgba(0,0,0,1) 0px, rgba(0,0,0,1) 20px, rgba(255,255,255,1) 21px, rgba(255,255,255,1) 100%, rgba(0,0,0,1) 100%);
+}
+/* 接下来让这个太极开始转动 */
+#div1{
+    animation:roll 2s linear infinite;
+}
+@keyframes roll{
+    0%{
+      transform: translateX(-50%) rotate(0deg);
+    }
+    100%{
+      transform: translateX(-50%) rotate(360deg);
+    }
+}
+/* 接下来在太极的下方加一个用来控制太极转动速度的滑块，向左变慢，向右变快。 */
+.speedController-box{
+  visibility: visible;
 }
 `;
 let string2 = "";
 let n = 0;
+
+window.onload = ()=> {
+  let $$ = (dom)=> {
+      return document.querySelector(dom);
+  }
+  $$('#taiChispeed').oninput = ()=> {
+      let taiChispeedValue = 101-$$('#taiChispeed').value;
+      let animation = `roll ${taiChispeedValue}s linear infinite`;
+      $$('#div1').style.animation = animation;
+  }
+}
 
 let step = () => {
   setTimeout(() => {
@@ -70,7 +97,7 @@ let step = () => {
       n += 1;
       step();
     }
-  }, 50);
+  }, 30);
 };
 
 step(); // 1=>2
